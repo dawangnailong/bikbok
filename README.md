@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-终端会显示本地访问地址，通常为 `http://localhost:5173`。
+终端会显示本地访问地址，通常为 `http://localhost:3000`。
 
 ### 生产构建
 
@@ -32,7 +32,17 @@ npm run build
 npm run preview
 ```
 
-构建结果位于 `dist/`。部署时需要支持静态单页应用；项目包含 PWA Service Worker，建议通过 HTTPS 或 localhost 访问。
+构建结果位于 `dist/`，用 `npm run preview` 在本地查看。
+
+> 不要直接用浏览器双击打开 `dist/index.html`。通过 `file://` 打开时浏览器会以 CORS 限制拦截 ES 模块脚本，页面会白屏；这不是构建失败。请使用 `npm run preview` 或任意静态文件服务器（如 `npx serve dist`）访问。
+
+部署时需要支持静态单页应用；项目包含 PWA Service Worker，建议通过 HTTPS 或 localhost 访问。
+
+### 部署到 GitHub Pages
+
+仓库包含 `.github/workflows/deploy.yml`：推送到 `main` 后自动执行 `npm ci && npm run build`，并把 `dist/` 发布到 GitHub Pages。
+
+首次使用时，需要在仓库 **Settings → Pages → Build and deployment → Source** 中选择 **GitHub Actions**。若仍为旧的“从分支发布（Deploy from a branch）”，Pages 会直接发布仓库源码根目录，浏览器加载不到 `src/main.tsx`，页面白屏。
 
 ### 其他命令
 
